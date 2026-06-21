@@ -111,7 +111,7 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
 
   return (
     <AppContext.Provider value={value}>
-      <main className="max-w-lg mx-auto min-h-screen pb-24 safe-top">
+      <main className="max-w-lg mx-auto min-h-screen pb-28 safe-top">
         {children}
       </main>
       <BottomNav />

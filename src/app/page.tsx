@@ -8,6 +8,8 @@ import {
   getDayRecord,
 } from "@/lib/utils";
 import { CHALLENGE_DAYS } from "@/types";
+import PageHeader from "@/components/ui/PageHeader";
+import EditorialCard from "@/components/ui/EditorialCard";
 import StatCard from "@/components/StatCard";
 
 export default function HomePage() {
@@ -20,65 +22,56 @@ export default function HomePage() {
   const todayCompleted = Object.values(todayDay.rituals).filter(Boolean).length;
 
   return (
-    <div className="px-5 pt-8">
-      <header className="mb-8">
-        <h1 className="font-serif text-4xl text-olive tracking-tight">Wave</h1>
-        <p className="text-sm text-charcoal/50 mt-1">
-          Sustainable momentum, one day at a time
+    <div className="px-7 pt-14 pb-8">
+      <PageHeader
+        title="Wave"
+        subtitle="Sustainable momentum, one gentle day at a time"
+      />
+
+      <EditorialCard padding="lg" className="mb-14">
+        <p className="label-caps text-center">Your journey</p>
+        <p className="font-serif text-[4.5rem] leading-none text-olive text-center mt-4 font-normal">
+          {stats.currentDayNumber}
         </p>
-      </header>
+        <p className="body-soft text-center mt-3">
+          {stats.currentDayNumber <= CHALLENGE_DAYS
+            ? `Day of ${CHALLENGE_DAYS}`
+            : "Ongoing ritual"}
+        </p>
 
-      <div className="bg-white/50 rounded-3xl p-6 shadow-soft mb-6">
-        <div className="text-center">
-          <p className="text-sm text-sage font-medium uppercase tracking-wider">
-            Challenge Progress
-          </p>
-          <p className="font-serif text-5xl text-olive mt-2">
-            Day {stats.currentDayNumber}
-          </p>
-          <p className="text-sm text-charcoal/40 mt-1">
-            {stats.currentDayNumber <= CHALLENGE_DAYS
-              ? `of ${CHALLENGE_DAYS}`
-              : "ongoing journey"}
-          </p>
-        </div>
-
-        <div className="mt-6 pt-6 border-t border-sand/30">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-charcoal/60">Overall Completion</span>
-            <span className="text-lg font-serif text-olive">
+        <div className="divider-soft mt-10 pt-10">
+          <div className="flex items-baseline justify-between">
+            <span className="label-caps">Overall presence</span>
+            <span className="font-serif text-2xl text-olive">
               {stats.overallCompletion}%
             </span>
           </div>
-          <div className="w-full h-2 bg-sand/30 rounded-full overflow-hidden">
+          <div className="w-full h-px bg-sand/30 mt-6 overflow-hidden">
             <div
-              className="h-full bg-sage rounded-full transition-all duration-700"
+              className="h-full bg-sage/60 transition-all duration-1000"
               style={{ width: `${stats.overallCompletion}%` }}
             />
           </div>
         </div>
+      </EditorialCard>
+
+      <div className="grid grid-cols-3 gap-8 mb-14 px-2">
+        <StatCard label="Complete" value={stats.completeDays} status="complete" />
+        <StatCard label="Partial" value={stats.partialDays} status="partial" />
+        <StatCard label="Quiet" value={stats.missedDays} status="missed" />
       </div>
 
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <StatCard label="Complete" value={stats.completeDays} sublabel="🟢" />
-        <StatCard label="Partial" value={stats.partialDays} sublabel="🟡" />
-        <StatCard label="Missed" value={stats.missedDays} sublabel="⚪" />
-      </div>
-
-      <div className="bg-sage/10 rounded-2xl p-5 mb-6">
-        <p className="text-xs text-sage uppercase tracking-wider font-medium mb-1">
-          Today&apos;s Progress
+      <EditorialCard className="mb-16">
+        <p className="label-caps">Today</p>
+        <p className="font-serif text-4xl text-olive mt-4 font-normal">
+          {todayCompleted}
+          <span className="text-xl text-charcoal/30 font-light"> / 5</span>
         </p>
-        <p className="text-charcoal">
-          <span className="font-serif text-2xl text-olive">
-            {todayCompleted}
-          </span>
-          <span className="text-charcoal/50"> / 5 rituals</span>
-        </p>
-      </div>
+        <p className="body-soft mt-2">rituals completed</p>
+      </EditorialCard>
 
-      <blockquote className="text-center px-4">
-        <p className="font-serif text-xl text-olive/80 italic leading-relaxed">
+      <blockquote className="text-center px-6 py-4">
+        <p className="font-serif text-2xl text-olive/70 font-normal italic leading-relaxed tracking-tight">
           &ldquo;{message}&rdquo;
         </p>
       </blockquote>

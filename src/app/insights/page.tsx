@@ -3,6 +3,9 @@
 import { useApp } from "@/components/ClientProviders";
 import { calculateStats, generateInsights } from "@/lib/utils";
 import { MOOD_OPTIONS, WAVE_OPTIONS } from "@/types";
+import { WAVE_ICONS, MOOD_ICONS } from "@/lib/icons";
+import PageHeader from "@/components/ui/PageHeader";
+import EditorialCard from "@/components/ui/EditorialCard";
 import StatCard from "@/components/StatCard";
 
 export default function InsightsPage() {
@@ -12,34 +15,29 @@ export default function InsightsPage() {
   const insights = generateInsights(state);
 
   return (
-    <div className="px-5 pt-8 pb-4">
-      <header className="mb-6">
-        <h1 className="font-serif text-3xl text-olive">Insights</h1>
-        <p className="text-sm text-charcoal/50 mt-1">
-          Patterns from your journey
+    <div className="px-7 pt-14 pb-8">
+      <PageHeader
+        title="Insights"
+        subtitle="Patterns emerging from your practice"
+      />
+
+      <EditorialCard padding="lg" className="mb-14">
+        <p className="label-caps text-center">Overall presence</p>
+        <p className="font-serif text-5xl text-olive text-center mt-4 font-normal">
+          {stats.overallCompletion}%
         </p>
-      </header>
-
-      <div className="bg-white/50 rounded-3xl p-5 shadow-soft mb-6">
-        <div className="text-center mb-4">
-          <p className="text-sm text-charcoal/50">Overall Completion</p>
-          <p className="font-serif text-4xl text-olive mt-1">
-            {stats.overallCompletion}%
-          </p>
+        <div className="grid grid-cols-3 gap-6 mt-10 pt-8 divider-soft">
+          <StatCard label="Complete" value={stats.completeDays} status="complete" />
+          <StatCard label="Partial" value={stats.partialDays} status="partial" />
+          <StatCard label="Quiet" value={stats.missedDays} status="missed" />
         </div>
-        <div className="grid grid-cols-3 gap-3">
-          <StatCard label="Complete" value={stats.completeDays} />
-          <StatCard label="Partial" value={stats.partialDays} />
-          <StatCard label="Missed" value={stats.missedDays} />
-        </div>
-      </div>
+      </EditorialCard>
 
-      <section className="mb-6">
-        <h2 className="text-xs uppercase tracking-wider text-charcoal/50 font-medium mb-3">
-          Wave Intensity
-        </h2>
-        <div className="grid grid-cols-3 gap-3">
+      <section className="mb-14">
+        <h2 className="label-caps mb-8 px-1">Pace</h2>
+        <div className="space-y-1">
           {WAVE_OPTIONS.map((option) => {
+            const Icon = WAVE_ICONS[option.value];
             const count =
               option.value === "wave"
                 ? stats.waveDays
@@ -49,46 +47,56 @@ export default function InsightsPage() {
             return (
               <div
                 key={option.value}
-                className="bg-white/60 rounded-2xl p-4 text-center shadow-card"
+                className="flex items-center gap-5 py-5 divider-soft"
               >
-                <span className="text-xl">{option.emoji}</span>
-                <p className="text-lg font-serif text-olive mt-1">{count}</p>
-                <p className="text-[10px] text-charcoal/50">{option.label}</p>
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sand/15 text-olive/70">
+                  <Icon size={16} strokeWidth={1.25} />
+                </span>
+                <span className="flex-1 font-serif text-lg text-olive font-normal">
+                  {option.label}
+                </span>
+                <span className="font-serif text-2xl text-olive/80">
+                  {count}
+                </span>
               </div>
             );
           })}
         </div>
       </section>
 
-      <section className="mb-6">
-        <h2 className="text-xs uppercase tracking-wider text-charcoal/50 font-medium mb-3">
-          Mood Breakdown
-        </h2>
-        <div className="space-y-2">
+      <section className="mb-14">
+        <h2 className="label-caps mb-8 px-1">Feeling</h2>
+        <div className="space-y-1">
           {MOOD_OPTIONS.map((option) => {
+            const Icon = MOOD_ICONS[option.value];
             const count = stats.moodCounts[option.value];
             const total = Object.values(stats.moodCounts).reduce(
               (a, b) => a + b,
               0
             );
-            const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
+            const percentage =
+              total > 0 ? Math.round((count / total) * 100) : 0;
             return (
               <div
                 key={option.value}
-                className="flex items-center gap-3 p-3 rounded-xl bg-white/60"
+                className="py-5 divider-soft"
               >
-                <span className="text-xl w-8 text-center">{option.emoji}</span>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-charcoal">{option.label}</span>
-                    <span className="text-xs text-charcoal/50">{count}</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-sand/30 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-sage rounded-full transition-all"
-                      style={{ width: `${percentage}%` }}
-                    />
-                  </div>
+                <div className="flex items-center gap-5 mb-3">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sand/15 text-olive/70">
+                    <Icon size={16} strokeWidth={1.25} />
+                  </span>
+                  <span className="flex-1 text-[14px] text-charcoal/65 font-light">
+                    {option.label}
+                  </span>
+                  <span className="text-[13px] text-charcoal/40 font-light">
+                    {count}
+                  </span>
+                </div>
+                <div className="ml-[3.75rem] h-px bg-sand/25 overflow-hidden">
+                  <div
+                    className="h-full bg-sage/50 transition-all"
+                    style={{ width: `${percentage}%` }}
+                  />
                 </div>
               </div>
             );
@@ -97,16 +105,14 @@ export default function InsightsPage() {
       </section>
 
       <section>
-        <h2 className="text-xs uppercase tracking-wider text-charcoal/50 font-medium mb-3">
-          Your Insights
-        </h2>
-        <div className="space-y-3">
+        <h2 className="label-caps mb-8 px-1">Observations</h2>
+        <div className="space-y-4">
           {insights.map((insight, i) => (
             <div
               key={i}
-              className="p-4 rounded-2xl bg-sage/10 border border-sage/20"
+              className="py-6 px-6 border border-sand/25 rounded-sm bg-white/20"
             >
-              <p className="text-sm text-charcoal leading-relaxed">
+              <p className="font-serif text-lg text-olive/85 leading-relaxed font-normal">
                 {insight.text}
               </p>
             </div>

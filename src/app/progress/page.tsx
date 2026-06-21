@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import { useApp } from "@/components/ClientProviders";
-import {
-  getDayRecord,
-  getChallengeDayNumber,
-} from "@/lib/utils";
+import { getDayRecord, getChallengeDayNumber } from "@/lib/utils";
+import PageHeader from "@/components/ui/PageHeader";
+import EditorialCard from "@/components/ui/EditorialCard";
 import CalendarGrid from "@/components/CalendarGrid";
 import DayDetailModal from "@/components/DayDetailModal";
 
@@ -21,23 +20,21 @@ export default function ProgressPage() {
     : 0;
 
   return (
-    <div className="px-5 pt-8">
-      <header className="mb-6">
-        <h1 className="font-serif text-3xl text-olive">Progress</h1>
-        <p className="text-sm text-charcoal/50 mt-1">
-          Your consistency pattern over time
-        </p>
-      </header>
+    <div className="px-7 pt-14 pb-8">
+      <PageHeader
+        title="Progress"
+        subtitle="Your rhythm across time"
+      />
 
-      <div className="bg-white/50 rounded-3xl p-5 shadow-soft">
+      <EditorialCard padding="lg">
         <CalendarGrid
           state={state}
           onDayClick={(date) => setSelectedDate(date)}
         />
-      </div>
+      </EditorialCard>
 
-      <p className="text-xs text-charcoal/40 text-center mt-4">
-        Tap any day to view rituals and reflections
+      <p className="body-soft text-center mt-8">
+        Select a day to revisit your rituals and reflections
       </p>
 
       {selectedDay && selectedDate && (

@@ -10,6 +10,7 @@ import {
   parseDate,
   formatDate,
 } from "@/lib/utils";
+import StatusIndicator from "@/components/StatusIndicator";
 
 interface CalendarGridProps {
   state: AppState;
@@ -19,6 +20,8 @@ interface CalendarGridProps {
 export default function CalendarGrid({ state, onDayClick }: CalendarGridProps) {
   const today = formatDate(new Date());
   const dates = getAllChallengeDates(state.challengeStartDate, today);
+
+  if (dates.length === 0) return null;
 
   const weeks: string[][] = [];
   let currentWeek: string[] = [];
@@ -41,24 +44,24 @@ export default function CalendarGrid({ state, onDayClick }: CalendarGridProps) {
     weeks.push(currentWeek);
   }
 
-  const dayLabels = ["S", "M", "T", "W", "T", "F", "S"];
+  const dayLabels = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
   return (
     <div>
-      <div className="grid grid-cols-7 gap-1 mb-2">
+      <div className="grid grid-cols-7 gap-2 mb-4">
         {dayLabels.map((label, i) => (
           <div
             key={i}
-            className="text-center text-[10px] text-charcoal/40 font-medium py-1"
+            className="text-center text-[9px] text-charcoal/35 tracking-[0.15em] uppercase py-2"
           >
             {label}
           </div>
         ))}
       </div>
 
-      <div className="space-y-1">
+      <div className="space-y-2">
         {weeks.map((week, wi) => (
-          <div key={wi} className="grid grid-cols-7 gap-1">
+          <div key={wi} className="grid grid-cols-7 gap-2">
             {week.map((date, di) => {
               if (!date) {
                 return <div key={di} className="aspect-square" />;
@@ -76,14 +79,14 @@ export default function CalendarGrid({ state, onDayClick }: CalendarGridProps) {
                 <button
                   key={date}
                   onClick={() => onDayClick(date)}
-                  className={`aspect-square rounded-lg ${getStatusColor(
+                  className={`aspect-square rounded-sm ${getStatusColor(
                     status
-                  )} flex items-center justify-center transition-transform active:scale-90 ${
-                    isToday ? "ring-2 ring-olive ring-offset-1" : ""
+                  )} flex items-center justify-center transition-all hover:opacity-80 ${
+                    isToday ? "ring-1 ring-olive/50 ring-offset-2 ring-offset-background" : ""
                   }`}
                   title={`Day ${dayNum}`}
                 >
-                  <span className="text-[10px] text-charcoal/50 font-medium">
+                  <span className="text-[11px] text-charcoal/45 font-light">
                     {parseDate(date).getDate()}
                   </span>
                 </button>
@@ -93,19 +96,10 @@ export default function CalendarGrid({ state, onDayClick }: CalendarGridProps) {
         ))}
       </div>
 
-      <div className="flex items-center justify-center gap-4 mt-6">
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-success" />
-          <span className="text-[10px] text-charcoal/50">Complete</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-sand" />
-          <span className="text-[10px] text-charcoal/50">Partial</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-background border border-sand/60" />
-          <span className="text-[10px] text-charcoal/50">Missed</span>
-        </div>
+      <div className="flex items-center justify-center gap-8 mt-10 pt-8 divider-soft">
+        <StatusIndicator status="complete" showLabel size="sm" />
+        <StatusIndicator status="partial" showLabel size="sm" />
+        <StatusIndicator status="missed" showLabel size="sm" />
       </div>
     </div>
   );

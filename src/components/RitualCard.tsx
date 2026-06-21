@@ -1,6 +1,8 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { Ritual } from "@/types";
+import { RITUAL_ICONS } from "@/lib/icons";
 
 interface RitualCardProps {
   ritual: Ritual;
@@ -13,42 +15,42 @@ export default function RitualCard({
   completed,
   onToggle,
 }: RitualCardProps) {
+  const Icon = RITUAL_ICONS[ritual.id];
+
   return (
     <button
       onClick={onToggle}
-      className={`w-full text-left rounded-2xl p-5 transition-all duration-300 shadow-card active:scale-[0.98] ${
+      className={`w-full text-left rounded-sm transition-all duration-500 group ${
         completed
-          ? "bg-success/30 border-2 border-success"
-          : "bg-white/70 border-2 border-transparent hover:border-sand/50"
+          ? "border border-success/40 bg-success/10"
+          : "border border-sand/25 bg-white/20 hover:bg-white/40 hover:border-sand/40"
       }`}
     >
-      <div className="flex items-center gap-4">
-        <span className="text-3xl">{ritual.emoji}</span>
-        <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-charcoal text-lg">{ritual.name}</h3>
-          <p className="text-sm text-charcoal/50 mt-0.5">{ritual.description}</p>
-        </div>
-        <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
-            completed ? "bg-success" : "bg-sand/30"
+      <div className="flex items-start gap-5 p-6">
+        <span
+          className={`inline-flex items-center justify-center w-11 h-11 rounded-full flex-shrink-0 transition-colors ${
+            completed
+              ? "bg-success/25 text-olive"
+              : "bg-sand/15 text-olive/70 group-hover:bg-sand/25"
           }`}
         >
-          {completed && (
-            <svg
-              className="w-5 h-5 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m4.5 12.75 6 6 9-13.5"
-              />
-            </svg>
-          )}
+          <Icon size={18} strokeWidth={1.25} />
+        </span>
+        <div className="flex-1 min-w-0 pt-0.5">
+          <h3 className="font-serif text-xl text-olive font-normal tracking-tight">
+            {ritual.name}
+          </h3>
+          <p className="body-soft mt-2">{ritual.description}</p>
         </div>
+        <span
+          className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 transition-all ${
+            completed
+              ? "bg-olive text-white/90"
+              : "border border-sand/50 bg-transparent"
+          }`}
+        >
+          {completed && <Check size={12} strokeWidth={2} />}
+        </span>
       </div>
     </button>
   );

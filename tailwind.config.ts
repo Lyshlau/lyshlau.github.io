@@ -20,14 +20,17 @@ const config: Config = {
         sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
         serif: ["var(--font-cormorant)", "Georgia", "serif"],
       },
+      letterSpacing: {
+        editorial: "0.18em",
+      },
       boxShadow: {
-        soft: "0 4px 24px rgba(57, 57, 52, 0.06)",
-        card: "0 2px 16px rgba(57, 57, 52, 0.04)",
+        soft: "0 8px 40px rgba(57, 57, 52, 0.04)",
+        card: "0 2px 20px rgba(57, 57, 52, 0.03)",
       },
       borderRadius: {
-        xl: "1rem",
-        "2xl": "1.25rem",
-        "3xl": "1.5rem",
+        xl: "0.75rem",
+        "2xl": "1rem",
+        "3xl": "1.25rem",
       },
     },
   },

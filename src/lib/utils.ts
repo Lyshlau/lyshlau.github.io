@@ -322,32 +322,21 @@ export function shouldShowReflection(day: DayRecord): boolean {
 export function getStatusColor(status: DayStatus): string {
   switch (status) {
     case "complete":
-      return "bg-success";
+      return "bg-success/80";
     case "partial":
-      return "bg-sand";
+      return "bg-sand/70";
     case "missed":
-      return "bg-background border border-sand/60";
+      return "bg-transparent border border-sand/40";
   }
 }
 
 export function getStatusLabel(status: DayStatus): string {
   switch (status) {
     case "complete":
-      return "Complete Day";
+      return "Complete day";
     case "partial":
-      return "Partial Day";
+      return "Partial day";
     case "missed":
-      return "Missed Day";
-  }
-}
-
-export function getStatusEmoji(status: DayStatus): string {
-  switch (status) {
-    case "complete":
-      return "🟢";
-    case "partial":
-      return "🟡";
-    case "missed":
-      return "⚪";
+      return "Quiet day";
   }
 }

@@ -19,7 +19,6 @@ export type Mood =
 export interface Ritual {
   id: RitualId;
   name: string;
-  emoji: string;
   description: string;
   examples: string[];
 }
@@ -44,22 +43,19 @@ export const RITUALS: Ritual[] = [
   {
     id: "indoor-movement",
     name: "Indoor Movement",
-    emoji: "🌿",
-    description: "Minimum 20 minutes of indoor movement",
+    description: "At least twenty minutes of intentional movement indoors",
     examples: ["Pilates", "Yoga", "Mobility", "Stretching", "Strength training"],
   },
   {
     id: "outdoor-movement",
     name: "Outdoor Movement",
-    emoji: "☀️",
-    description: "Minimum 20 minutes of outdoor movement",
+    description: "At least twenty minutes moving in the open air",
     examples: ["Walk", "Run", "Hike", "Outdoor workout"],
   },
   {
     id: "nourish",
     name: "Nourish",
-    emoji: "🥗",
-    description: "Prioritise whole foods and minimise ultra-processed foods",
+    description: "Whole foods, prepared with care and intention",
     examples: [
       "Protein-rich meals",
       "Fruit and vegetables",
@@ -70,15 +66,13 @@ export const RITUALS: Ritual[] = [
   {
     id: "ground",
     name: "Ground",
-    emoji: "🧘",
-    description: "Quiet moments of presence and reflection",
+    description: "Quiet moments of presence and inner stillness",
     examples: ["Meditation", "Journaling", "Breathwork", "Quiet reflection"],
   },
   {
     id: "grow",
     name: "Grow",
-    emoji: "✨",
-    description: "Expand your mind and create something new",
+    description: "Expand your mind and nurture your curiosity",
     examples: ["Read", "Learn", "Study", "Build something", "Create something"],
   },
 ];
@@ -86,39 +80,34 @@ export const RITUALS: Ritual[] = [
 export const WAVE_OPTIONS: {
   value: WaveIntensity;
   label: string;
-  emoji: string;
   description: string;
 }[] = [
   {
     value: "wave",
     label: "Wave",
-    emoji: "🌊",
     description: "Steady and sustainable",
   },
   {
     value: "building-swell",
     label: "Building Swell",
-    emoji: "🌊🌊",
     description: "Pushed a little harder than usual",
   },
   {
     value: "tsunami",
     label: "Tsunami",
-    emoji: "🌊🌊🌊",
-    description: "Went all in today and may need recovery",
+    description: "Went all in — recovery may be needed",
   },
 ];
 
 export const MOOD_OPTIONS: {
   value: Mood;
   label: string;
-  emoji: string;
 }[] = [
-  { value: "energised", label: "Energised", emoji: "😊" },
-  { value: "calm", label: "Calm", emoji: "😌" },
-  { value: "neutral", label: "Neutral", emoji: "😐" },
-  { value: "tired", label: "Tired", emoji: "😴" },
-  { value: "drained", label: "Drained", emoji: "😩" },
+  { value: "energised", label: "Energised" },
+  { value: "calm", label: "Calm" },
+  { value: "neutral", label: "Neutral" },
+  { value: "tired", label: "Tired" },
+  { value: "drained", label: "Drained" },
 ];
 
 export const MOTIVATIONAL_MESSAGES = [
