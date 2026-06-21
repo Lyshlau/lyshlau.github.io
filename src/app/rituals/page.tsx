@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useApp } from "@/context/AppContext";
+import { useApp } from "@/components/ClientProviders";
 import {
   getToday,
   getDayRecord,
@@ -16,17 +16,9 @@ import RitualCard from "@/components/RitualCard";
 import ReflectionModal from "@/components/ReflectionModal";
 
 export default function RitualsPage() {
-  const { state, hydrated, toggle, reflect } = useApp();
+  const { state, toggle, reflect } = useApp();
   const today = getToday();
   const [showReflection, setShowReflection] = useState(false);
-
-  if (!hydrated) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-sage border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
 
   const day = getDayRecord(state, today);
   const status = getDayStatus(day);

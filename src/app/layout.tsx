@@ -1,8 +1,7 @@
 import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { AppProvider } from "@/context/AppContext";
-import AppShell from "@/components/AppShell";
+import ClientProviders from "@/components/ClientProviders";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -46,9 +45,7 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${cormorant.variable} font-sans min-h-screen`}
       >
-        <AppProvider>
-          <AppShell>{children}</AppShell>
-        </AppProvider>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );

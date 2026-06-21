@@ -1,6 +1,6 @@
 "use client";
 
-import { useApp } from "@/context/AppContext";
+import { useApp } from "@/components/ClientProviders";
 import {
   calculateStats,
   getMotivationalMessage,
@@ -11,18 +11,10 @@ import { CHALLENGE_DAYS } from "@/types";
 import StatCard from "@/components/StatCard";
 
 export default function HomePage() {
-  const { state, hydrated } = useApp();
+  const { state } = useApp();
   const today = getToday();
   const stats = calculateStats(state);
   const message = getMotivationalMessage(today);
-
-  if (!hydrated) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-sage border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
 
   const todayDay = getDayRecord(state, today);
   const todayCompleted = Object.values(todayDay.rituals).filter(Boolean).length;

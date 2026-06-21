@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useApp } from "@/context/AppContext";
+import { useApp } from "@/components/ClientProviders";
 import {
   getDayRecord,
   getChallengeDayNumber,
@@ -10,16 +10,8 @@ import CalendarGrid from "@/components/CalendarGrid";
 import DayDetailModal from "@/components/DayDetailModal";
 
 export default function ProgressPage() {
-  const { state, hydrated } = useApp();
+  const { state } = useApp();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-
-  if (!hydrated) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-sage border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
 
   const selectedDay = selectedDate
     ? getDayRecord(state, selectedDate)

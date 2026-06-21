@@ -4,10 +4,9 @@ import {
   DayStatus,
   Mood,
   MOTIVATIONAL_MESSAGES,
-  Reflection,
   RitualId,
-  RITUALS,
 } from "@/types";
+import { createEmptyDay } from "@/lib/state";
 
 export function formatDate(date: Date): string {
   const year = date.getFullYear();
@@ -29,24 +28,6 @@ export function addDays(dateStr: string, days: number): string {
 
 export function getToday(): string {
   return formatDate(new Date());
-}
-
-export function createEmptyDay(date: string): DayRecord {
-  const rituals = {} as Record<RitualId, boolean>;
-  for (const ritual of RITUALS) {
-    rituals[ritual.id] = false;
-  }
-  return { date, rituals, reflection: null };
-}
-
-export function createInitialState(): AppState {
-  const today = getToday();
-  return {
-    challengeStartDate: today,
-    days: {
-      [today]: createEmptyDay(today),
-    },
-  };
 }
 
 export function getCompletedRitualCount(day: DayRecord): number {
@@ -82,6 +63,8 @@ export function getAllChallengeDates(
   challengeStartDate: string,
   upToDate?: string
 ): string[] {
+  if (!challengeStartDate) return [];
+
   const end = upToDate ?? getToday();
   const dates: string[] = [];
   let current = challengeStartDate;
@@ -116,6 +99,27 @@ export function calculateStats(
   state: AppState,
   upToDate?: string
 ): ChallengeStats {
+  if (!state.challengeStartDate) {
+    return {
+      totalDays: 0,
+      completeDays: 0,
+      partialDays: 0,
+      missedDays: 0,
+      overallCompletion: 0,
+      currentDayNumber: 0,
+      waveDays: 0,
+      buildingSwellDays: 0,
+      tsunamiDays: 0,
+      moodCounts: {
+        energised: 0,
+        calm: 0,
+        neutral: 0,
+        tired: 0,
+        drained: 0,
+      },
+    };
+  }
+
   const end = upToDate ?? getToday();
   const dates = getAllChallengeDates(state.challengeStartDate, end);
 
@@ -313,44 +317,6 @@ export function generateInsights(state: AppState): Insight[] {
 export function shouldShowReflection(day: DayRecord): boolean {
   const count = getCompletedRitualCount(day);
   return count > 0 && day.reflection === null;
-}
-
-export function toggleRitual(
-  state: AppState,
-  date: string,
-  ritualId: RitualId
-): AppState {
-  const day = getDayRecord(state, date);
-  const updatedDay: DayRecord = {
-    ...day,
-    rituals: {
-      ...day.rituals,
-      [ritualId]: !day.rituals[ritualId],
-    },
-  };
-
-  return {
-    ...state,
-    days: {
-      ...state.days,
-      [date]: updatedDay,
-    },
-  };
-}
-
-export function setReflection(
-  state: AppState,
-  date: string,
-  reflection: Reflection
-): AppState {
-  const day = getDayRecord(state, date);
-  return {
-    ...state,
-    days: {
-      ...state.days,
-      [date]: { ...day, reflection },
-    },
-  };
 }
 
 export function getStatusColor(status: DayStatus): string {

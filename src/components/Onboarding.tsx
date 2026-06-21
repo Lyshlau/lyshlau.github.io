@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { formatDate, createEmptyDay } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import { createEmptyDay } from "@/lib/state";
 
 interface OnboardingProps {
   onStart: (startDate: string) => void;

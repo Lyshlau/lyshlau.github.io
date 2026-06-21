@@ -1,20 +1,12 @@
 "use client";
 
-import { useApp } from "@/context/AppContext";
+import { useApp } from "@/components/ClientProviders";
 import { calculateStats, generateInsights } from "@/lib/utils";
 import { MOOD_OPTIONS, WAVE_OPTIONS } from "@/types";
 import StatCard from "@/components/StatCard";
 
 export default function InsightsPage() {
-  const { state, hydrated } = useApp();
-
-  if (!hydrated) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-sage border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
+  const { state } = useApp();
 
   const stats = calculateStats(state);
   const insights = generateInsights(state);
