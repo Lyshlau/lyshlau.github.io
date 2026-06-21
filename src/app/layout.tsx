@@ -44,6 +44,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${dmSans.variable} ${cormorant.variable} font-sans min-h-screen`}
+        style={{ backgroundColor: "#F6F3EE" }}
       >
         <ClientProviders>{children}</ClientProviders>
       </body>

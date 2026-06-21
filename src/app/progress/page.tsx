@@ -9,8 +9,17 @@ import CalendarGrid from "@/components/CalendarGrid";
 import DayDetailModal from "@/components/DayDetailModal";
 
 export default function ProgressPage() {
-  const { state } = useApp();
+  const { state, hydrated } = useApp();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  if (!hydrated) {
+    return (
+      <div className="px-7 pt-14">
+        <p className="font-serif text-3xl text-olive">Progress</p>
+        <p className="text-sm text-charcoal/50 mt-3">Wave is running</p>
+      </div>
+    );
+  }
 
   const selectedDay = selectedDate
     ? getDayRecord(state, selectedDate)

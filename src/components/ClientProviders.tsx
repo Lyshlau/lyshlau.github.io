@@ -38,15 +38,23 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 function LoadingScreen() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-8 h-8 border-2 border-sage border-t-transparent rounded-full animate-spin" />
+    <div
+      className="flex flex-col items-center justify-center min-h-screen px-6"
+      style={{ backgroundColor: "#F6F3EE" }}
+    >
+      <p className="font-serif text-4xl text-olive">Wave</p>
+      <p className="text-sm text-charcoal/50 mt-3 font-light tracking-wide">
+        Wave is running
+      </p>
     </div>
   );
 }
 
 export function useApp() {
   const ctx = useContext(AppContext);
-  if (!ctx) throw new Error("useApp must be used within ClientProviders");
+  if (!ctx) {
+    throw new Error("useApp must be used within ClientProviders");
+  }
   return ctx;
 }
 
@@ -56,17 +64,21 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
-    const stored = loadStoredState();
-    if (stored && isOnboardingComplete()) {
-      setState(stored);
-    } else {
+    try {
+      const stored = loadStoredState();
+      if (stored?.challengeStartDate && isOnboardingComplete()) {
+        setState(stored);
+      } else {
+        setShowOnboarding(true);
+      }
+    } catch {
       setShowOnboarding(true);
     }
     setHydrated(true);
   }, []);
 
   useEffect(() => {
-    if (hydrated && !showOnboarding) {
+    if (hydrated && !showOnboarding && state.challengeStartDate) {
       saveStoredState(state);
     }
   }, [state, hydrated, showOnboarding]);
@@ -86,6 +98,7 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
     };
     setState(newState);
     markOnboardingComplete();
+    saveStoredState(newState);
     setShowOnboarding(false);
   }, []);
 
@@ -101,20 +114,29 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
     [state, hydrated, showOnboarding, toggle, reflect, startChallenge]
   );
 
-  if (!hydrated) {
-    return <LoadingScreen />;
-  }
-
-  if (showOnboarding) {
-    return <Onboarding onStart={startChallenge} />;
-  }
+  const showOverlay = !hydrated || showOnboarding;
+  const showApp = hydrated && !showOnboarding;
 
   return (
     <AppContext.Provider value={value}>
-      <main className="max-w-lg mx-auto min-h-screen pb-28 safe-top">
+      {showOverlay && (
+        <div className="fixed inset-0 z-[100]">
+          {!hydrated ? (
+            <LoadingScreen />
+          ) : (
+            <Onboarding onStart={startChallenge} />
+          )}
+        </div>
+      )}
+      <main
+        className={`max-w-lg mx-auto min-h-screen pb-28 safe-top ${
+          showOverlay ? "invisible" : ""
+        }`}
+        aria-hidden={showOverlay}
+      >
         {children}
       </main>
-      <BottomNav />
+      {showApp && <BottomNav />}
     </AppContext.Provider>
   );
 }

@@ -13,11 +13,20 @@ import EditorialCard from "@/components/ui/EditorialCard";
 import StatCard from "@/components/StatCard";
 
 export default function HomePage() {
-  const { state } = useApp();
+  const { state, hydrated } = useApp();
+
+  if (!hydrated) {
+    return (
+      <div className="px-7 pt-14">
+        <p className="font-serif text-4xl text-olive">Wave</p>
+        <p className="text-sm text-charcoal/50 mt-3">Wave is running</p>
+      </div>
+    );
+  }
+
   const today = getToday();
   const stats = calculateStats(state);
   const message = getMotivationalMessage(today);
-
   const todayDay = getDayRecord(state, today);
   const todayCompleted = Object.values(todayDay.rituals).filter(Boolean).length;
 

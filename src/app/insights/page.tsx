@@ -9,7 +9,16 @@ import EditorialCard from "@/components/ui/EditorialCard";
 import StatCard from "@/components/StatCard";
 
 export default function InsightsPage() {
-  const { state } = useApp();
+  const { state, hydrated } = useApp();
+
+  if (!hydrated) {
+    return (
+      <div className="px-7 pt-14">
+        <p className="font-serif text-3xl text-olive">Insights</p>
+        <p className="text-sm text-charcoal/50 mt-3">Wave is running</p>
+      </div>
+    );
+  }
 
   const stats = calculateStats(state);
   const insights = generateInsights(state);

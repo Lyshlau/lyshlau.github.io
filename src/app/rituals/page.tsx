@@ -16,9 +16,18 @@ import ReflectionModal from "@/components/ReflectionModal";
 import StatusIndicator from "@/components/StatusIndicator";
 
 export default function RitualsPage() {
-  const { state, toggle, reflect } = useApp();
+  const { state, hydrated, toggle, reflect } = useApp();
   const today = getToday();
   const [showReflection, setShowReflection] = useState(false);
+
+  if (!hydrated) {
+    return (
+      <div className="px-7 pt-14">
+        <p className="font-serif text-3xl text-olive">Rituals</p>
+        <p className="text-sm text-charcoal/50 mt-3">Wave is running</p>
+      </div>
+    );
+  }
 
   const day = getDayRecord(state, today);
   const status = getDayStatus(day);
